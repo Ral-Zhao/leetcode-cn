@@ -42,5 +42,3 @@ public class Solution {
         return result;
     }
 }
-    git config --global user.email "405952631@qq.com"
-        git config --global user.name "Ral-Zhao"

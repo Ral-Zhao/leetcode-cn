@@ -9,9 +9,10 @@ public class ListNodeUtil {
             return;
         }
         while (listNode != null) {
-            System.out.println(listNode.val);
+            System.out.print(listNode.val+" ");
             listNode = listNode.next;
         }
+        System.out.println();
     }
 
     public static ListNode buildList(int... vals) {

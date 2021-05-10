@@ -15,7 +15,7 @@ public class TreeUtil {
         Queue<TreeNode> queue = new ArrayDeque<>();
         queue.add(root);
         int index = 1;
-        while (index < vals.length - 1) {
+        while (index < vals.length) {
             TreeNode parent = queue.poll();
             if (parent == null) {
                 break;
@@ -24,7 +24,8 @@ public class TreeUtil {
                 parent.left = new TreeNode(vals[index]);
                 queue.add(parent.left);
             }
-            if (vals[++index] != null) {
+            index++;
+            if (index < vals.length && vals[index] != null) {
                 parent.right = new TreeNode(vals[index]);
                 queue.add(parent.right);
             }

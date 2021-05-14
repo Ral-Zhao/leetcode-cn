@@ -1,8 +1,11 @@
 package utils;
 
+import common.Node;
 import common.TreeNode;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 public class TreeUtil {
@@ -32,6 +35,31 @@ public class TreeUtil {
             index++;
         }
 
+
+        return root;
+    }
+
+    public static Node buildNTree(Integer... vals) {
+        if (vals == null) {
+            return null;
+        }
+        Node root = new Node(vals[0]);
+        if (vals.length < 3) {
+            return root;
+        }
+        Queue<Node> queue = new ArrayDeque<>();
+        queue.add(root);
+        int index = 1;
+        while (!queue.isEmpty()) {
+            Node parent = queue.poll();
+            List<Node> childs = new ArrayList<>();
+            parent.children = childs;
+            while (++index < vals.length && vals[index] != null) {
+                Node node = new Node(vals[index]);
+                childs.add(node);
+                queue.add(node);
+            }
+        }
 
         return root;
     }

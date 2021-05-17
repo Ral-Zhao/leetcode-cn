@@ -1,0 +1,114 @@
+package verticalOrderTraversalOfABinaryTree_987;
+
+import common.TreeNode;
+
+import java.util.*;
+
+/**
+ * 给你二叉树的根结点 root ，请你设计算法计算二叉树的 垂序遍历 序列。
+ * <p>
+ * 对位于 (row, col) 的每个结点而言，其左右子结点分别位于 (row + 1, col - 1) 和 (row + 1, col + 1) 。树的根结点位于 (0, 0) 。
+ * <p>
+ * 二叉树的 垂序遍历 从最左边的列开始直到最右边的列结束，按列索引每一列上的所有结点，形成一个按出现位置从上到下排序的有序列表。
+ * 如果同行同列上有多个结点，则按结点的值从小到大进行排序。
+ * <p>
+ * 返回二叉树的 垂序遍历 序列。
+ * <p>
+ *  
+ * <p>
+ * 示例 1：
+ * <p>
+ * <p>
+ * 输入：root = [3,9,20,null,null,15,7]
+ * 输出：[[9],[3,15],[20],[7]]
+ * 解释：
+ * 列 -1 ：只有结点 9 在此列中。
+ * 列  0 ：只有结点 3 和 15 在此列中，按从上到下顺序。
+ * 列  1 ：只有结点 20 在此列中。
+ * 列  2 ：只有结点 7 在此列中。
+ * 示例 2：
+ * <p>
+ * <p>
+ * 输入：root = [1,2,3,4,5,6,7]
+ * 输出：[[4],[2],[1,5,6],[3],[7]]
+ * 解释：
+ * 列 -2 ：只有结点 4 在此列中。
+ * 列 -1 ：只有结点 2 在此列中。
+ * 列  0 ：结点 1 、5 和 6 都在此列中。
+ * 1 在上面，所以它出现在前面。
+ * 5 和 6 位置都是 (2, 0) ，所以按值从小到大排序，5 在 6 的前面。
+ * 列  1 ：只有结点 3 在此列中。
+ * 列  2 ：只有结点 7 在此列中。
+ * 示例 3：
+ * <p>
+ * <p>
+ * 输入：root = [1,2,3,4,6,5,7]
+ * 输出：[[4],[2],[1,5,6],[3],[7]]
+ * 解释：
+ * 这个示例实际上与示例 2 完全相同，只是结点 5 和 6 在树中的位置发生了交换。
+ * 因为 5 和 6 的位置仍然相同，所以答案保持不变，仍然按值从小到大排序。
+ *  
+ * <p>
+ * 提示：
+ * <p>
+ * 树中结点数目总数在范围 [1, 1000] 内
+ * 0 <= Node.val <= 1000
+ * <p>
+ * 来源：力扣（LeetCode）
+ * 链接：https://leetcode-cn.com/problems/vertical-order-traversal-of-a-binary-tree
+ * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+ */
+public class Solution {
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        Map<Integer, List<TreeNode>> map = new HashMap<>();
+        Map<TreeNode, int[]> pos = new HashMap<>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.add(root);
+        pos.put(root, new int[]{0, 0});
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                root = queue.poll();
+                int[] arr = pos.get(root);
+                List<TreeNode> list = map.getOrDefault(arr[1], new ArrayList<>());
+                if (list.isEmpty()) {
+                    list.add(root);
+                } else {
+                    TreeNode last = list.get(list.size() - 1);
+                    if (pos.get(last)[0] != arr[0] || last.val <= root.val) {
+                        list.add(root);
+                    } else {
+                        int index = list.size() - 1;
+                        while (index >= 0 && pos.get(list.get(index))[0] == arr[0] && list.get(index).val > root.val) {
+                            index--;
+                        }
+                        list.add(index + 1, root);
+                    }
+                }
+                map.put(arr[1], list);
+                if (root.left != null) {
+                    pos.put(root.left, new int[]{arr[0] + 1, arr[1] - 1});
+                    queue.add(root.left);
+                }
+                if (root.right != null) {
+                    pos.put(root.right, new int[]{arr[0] + 1, arr[1] + 1});
+                    queue.add(root.right);
+                }
+            }
+        }
+        List<Integer> keys = new ArrayList<>(map.keySet());
+        Collections.sort(keys);
+        List<List<Integer>> result = new ArrayList<>();
+        for (int key : keys) {
+            List<TreeNode> nodes = map.get(key);
+            List<Integer> list = new ArrayList<>();
+            for (TreeNode node : nodes) {
+                list.add(node.val);
+            }
+            result.add(list);
+        }
+
+        return result;
+    }
+
+}

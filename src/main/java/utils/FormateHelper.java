@@ -2,7 +2,7 @@ package utils;
 
 public class FormateHelper {
     public static void main(String[] args) {
-        print("", 0);
+        print("serialize-and-deserialize-binary-tree", 297);
     }
 
     private static void print(String input, int num) {

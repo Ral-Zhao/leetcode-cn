@@ -39,6 +39,52 @@ public class TreeUtil {
         return root;
     }
 
+    public static void printTree(TreeNode root) {
+        System.out.println(serialize(root));
+    }
+
+    public static String serialize(TreeNode root) {
+        if (root == null) {
+            return "[]";
+        }
+        StringBuilder sb = new StringBuilder("[");
+        TreeNode unused = new TreeNode();
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.add(root);
+        int num = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            if (size == num) {
+                break;
+            }
+            num = 0;
+            for (int i = 0; i < size; i++) {
+                root = queue.poll();
+                if (root == unused) {
+                    sb.append("null").append(",");
+                    continue;
+                }
+                sb.append(root.val).append(",");
+                if (root.left != null) {
+                    queue.add(root.left);
+                } else {
+                    queue.add(unused);
+                    num++;
+                }
+                if (root.right != null) {
+                    queue.add(root.right);
+                } else {
+                    queue.add(unused);
+                    num++;
+                }
+
+            }
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("]");
+        return sb.toString();
+    }
+
     public static Node buildNTree(Integer... vals) {
         if (vals == null) {
             return null;

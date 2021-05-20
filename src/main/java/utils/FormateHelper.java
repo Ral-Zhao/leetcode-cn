@@ -2,7 +2,7 @@ package utils;
 
 public class FormateHelper {
     public static void main(String[] args) {
-        print("perfect-squares", 279);
+        print("", 0);
     }
 
     private static void print(String input, int num) {

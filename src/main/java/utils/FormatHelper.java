@@ -1,6 +1,6 @@
 package utils;
 
-public class FormateHelper {
+public class FormatHelper {
     public static void main(String[] args) {
         print("", 0);
     }
